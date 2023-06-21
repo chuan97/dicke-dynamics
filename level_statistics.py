@@ -44,12 +44,13 @@ def trim_vals(vals, N, N_photons_cutoff):
     assert len(np.where(np.abs(vals) < 1e-10)[0]) >= (N+1)*(N_photons_cutoff+1)//2
     return np.delete(vals, np.where(np.abs(vals) < 1e-10)[0][:(N+1)*(N_photons_cutoff+1)//2])
 
-def wigner_surmise_degree(renormalized_spacings, bins=50):
+def wigner_surmise_degree(renormalized_spacings, bins=500):
     s0 = 0.472913
-    counts, bin_edges = np.histogram(renormalized_spacings, bins=bins, density=True)
+    counts, bin_edges = np.histogram(renormalized_spacings, bins=bins, range=(0, 10), density=True) # important to fix range, otherwise each run changes the bin size
     ds = bin_edges[1] - bin_edges[0]
     s = np.arange(0, s0, ds)
     
     wigner = lambda s: 0.5*np.pi*s * np.exp(-0.25*np.pi*s**2)
+    #print(ds, np.sum(counts[np.where(bin_edges[1:] < s0)[0]]) * ds, np.sum(wigner(s)) * ds, np.sum(np.exp(-s)) * ds)
     
-    return (np.sum(counts[np.where(bin_edges[1:] <= s0)[0]]) - np.sum(wigner(s))) / (np.sum(np.exp(-s)) - np.sum(wigner(s)))
+    return np.abs((np.sum(counts[np.where(bin_edges[1:] < s0)[0]]) - np.sum(wigner(s))) / (np.sum(np.exp(-s)) - np.sum(wigner(s))))
