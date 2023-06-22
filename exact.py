@@ -43,13 +43,14 @@ def boson_operators(N_photons_cutoff, *, to_dense_array=False, format=None, dtyp
     return ops
 
 
-def dicke(ws, wc, lam, S, N_photons_cutoff):
+def dicke(ws, wc, lam, S, N_photons_cutoff, to_dense_array=True):
+    kron_ = kron if to_dense_array else krons
     g = lam / np.sqrt(2*S)
-    Sz, Sp, Sm, Seye = spin_operators(S, to_dense_array=True)
+    Sz, Sp, Sm, Seye = spin_operators(S, to_dense_array=to_dense_array)
     Sx = 0.5 * (Sp + Sm)
-    a, ad, beye = boson_operators(N_photons_cutoff, to_dense_array=True)
-
-    H = ws*kron(Sz, beye) + wc*kron(Seye, ad @ a) + 2*g*kron(Sx, a + ad)
+    a, ad, beye = boson_operators(N_photons_cutoff, to_dense_array=to_dense_array)
+    H = ws*kron_(Sz, beye) + wc*kron_(Seye, ad @ a) + 2*g*kron_(Sx, a + ad)
+    
     return H
 
 def dicke_P2(ws, wc, lam, S, N_photons_cutoff):
@@ -78,7 +79,7 @@ def Dicke_polaron(ws, wc, lam, eps, S, N_photons_cutoff, to_dense_array=True):
     Sx = 0.5 * (Sp + Sm)
     a, ad, beye = boson_operators(N_photons_cutoff, to_dense_array=to_dense_array)
     
-    H = ws * (kron_(Sz, coshm(2 * g / wc * (ad - a))) - kron_(0.5 * (Sp - Sm), sinhm(2 * g / wc * (ad - a))))\
+    H = ws * (kron_(Sz, coshm(2 * g / wc * (ad - a), to_dense_array=to_dense_array)) - kron_(0.5 * (Sp - Sm), sinhm(2 * g / wc * (ad - a), to_dense_array=to_dense_array)))\
         + wc * kron_(Seye, ad @ a) - 4 * g**2 / wc * kron_(Sx @ Sx, beye) - eps * kron_(Sx, beye) 
 
     return H
