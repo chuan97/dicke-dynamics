@@ -5,12 +5,12 @@ from scipy.linalg import eigh
 import exact
 import level_statistics as level_stat
 
-Ns = [4, 10, 20, 30, 40]
+Ns = [40]
 N_cutoffs = [150]
 
 wc = 1
 wz = 1 * wc
-lams = [1.0, 1.5]
+lams = [2.0]
 
 for N in Ns:
     for N_c in N_cutoffs:
