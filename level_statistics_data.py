@@ -10,7 +10,7 @@ N_cutoffs = [150]
 
 wc = 1
 wz = 1 * wc
-lams = [0.001, 0.01, 0.1]
+lams = [1.0, 1.5]
 
 for N in Ns:
     for N_c in N_cutoffs:
