@@ -73,6 +73,35 @@ def Dicke_classical_eqsmot_second_order(t, v, wz, wc, lam):
         
     return dv
 
+def Dicke_classical_eqsmot_second_order_sym(t, v, wz, wc, lam):
+    dv = np.empty(v.shape)
+    dv[0] = -wz*v[1] # mx
+    dv[1] = wz*v[0] - 2*lam*v[18] # my
+    dv[2] = 2*lam*v[13] # mz
+    dv[3] = -wc*v[4] # x
+    dv[4] = wc*v[3] + 2*lam*v[0] # p
+    dv[5] = -wz*v[6] # mx mx 
+    dv[6] = -2*wz*v[11] + 2*wz*v[5] + 8*lam*v[0]*v[2]*v[3] - 4*lam*v[0]*v[18] - 4*lam*v[2]*v[8] - 2*lam*v[3]*v[7] # alpha mx my
+    dv[7] = -wz*v[12] - 8*lam*v[0]*v[1]*v[3] + 4*lam*v[0]*v[13] + 4*lam*v[1]*v[8] + 2*lam*v[3]*v[6] # alpha mx mz
+    dv[8] = -wz*v[13] - wc*v[9] # mx x
+    dv[9] = -wz*v[14] + wc*v[8] + 2*lam*v[5] # mx p
+    dv[10] = - 2*lam*v[3]*v[15] # beta mx my
+    dv[11] = wz*v[6] + 8*lam*v[1]*v[2]*v[3] - 4*lam*v[1]*v[18] - 4*lam*v[2]*v[13] - 2*lam*v[3]*v[12] # my my
+    dv[12] = wz*v[7] + 8*lam*(v[2]**2)*v[3] - 8*lam*v[2]*v[18] - 4*lam*v[3]*v[17] - 8*lam*(v[1]**2)*v[3] + 8*lam*v[1]*v[13] + 4*lam*v[3]*v[11] # alpha my mz
+    dv[13] = wz*v[8] - wc*v[14] + 4*lam*v[2]*(v[3]**2) - 2*lam*v[2]*v[20] - 4*lam*v[3]*v[18] # my x
+    dv[14] = wz*v[9] + wc*v[13] + 4*lam*v[2]*v[3]*v[4] - lam*v[2]*v[21] - 2*lam*v[3]*v[19] - 2*lam*v[4]*v[18] + lam*v[6] # my p
+    dv[15] = 2*lam*v[3]*v[10] # beta mx mz
+    dv[16] = wz*v[15] # beta my mz
+    dv[17] = -8*lam*v[1]*v[2]*v[3] + 4*lam*v[2]*v[13] + 4*lam*v[1]*v[18] + 2*lam*v[3]*v[12] # mz mz
+    dv[18] = -wc*v[19] - 4*lam*v[1]*(v[3]**2) + 2*lam*v[1]*v[20] + 4*lam*v[3]*v[13] # mz x
+    dv[19] = wc*v[18] - 4*lam*v[1]*v[3]*v[4] + lam*v[1]*v[21] + 2*lam*v[3]*v[14] + 2*lam*v[4]*v[13] + lam*v[7] # mz p
+    dv[20] = -wc*v[21] # x x
+    dv[21] = -2*wc*v[23] + 2*wc*v[20] + 4*lam*v[8] # alpha x p
+    dv[22] = 0 # beta p x
+    dv[23] = wc*v[21] + 4*lam*v[9] # p p
+        
+    return dv
+
 def Dicke_classical_eqsmot_second_order_alt(t, v, wz, wc, lam):
     dv = np.empty(v.shape)
     dv[0] = -wz*v[1] # mx
